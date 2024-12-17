@@ -22,8 +22,13 @@ De Plus si vous voulez vous amusez sur les détails :
 - Systeme d'évolution à moitié mis en gros si vous arrivé à 10 victoire ou + vous avez une possibilité que votre pokemon deviennent sont evolution
 (Je ne sais pas vraiment si ça marche car ça a marché une fois sur 2)
 
-Pour le bien du projet penser à aller dans :
+
+En Retard, donc je comprendrais si vous ne prenais pas en compte c'est information mais c'est ultra utile pour lancer/ tester le projet: 
+
+[ Pour le bien du projet penser à aller dans :
 
 ExerciceMonsterContext.cs et modifier le text entre "Localhost\\ etc" car je n'ai pas eu le temps de reussir cela donc il est fonctionelle de mon cté mais j'ai pas réussi à implementer de changer cette partie ça endommager tout le reste de mon code à chaque fois
 ET
 GlobalVar.cs sur une autre ligne dans CleanData qui utilise la même ligne
+
+La premiere fois cela va crash c'est normal c'est le temps que la base de données se remplissent une première fois ]
