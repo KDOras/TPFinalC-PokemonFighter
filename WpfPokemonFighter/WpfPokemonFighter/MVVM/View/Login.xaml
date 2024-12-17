@@ -8,19 +8,77 @@
              d:DataContext="{d:DesignInstance Type=VM:LoginVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!-- Style pour le bouton -->
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="BorderBrush" Value="#FF388E3C"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF81C784"/>
+                    <Setter Property="BorderBrush" Value="#FF388E3C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style pour la TextBox -->
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="BorderBrush" Value="#FF388E3C"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#FF81C784"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Border>
             <Border.Background>
                 <ImageBrush ImageSource="https://images2.alphacoders.com/119/1199015.jpg"/>
             </Border.Background>
             <StackPanel VerticalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" FontSize="60" FontFamily="Showcard Gothic" Height="85" Foreground="Cyan" FontWeight="Bold"><Run Language="fr-fr" Text="LOGIN"/><LineBreak/><Run Language="fr-fr"/></TextBlock>
-                <TextBox Text="{Binding Username, Mode=TwoWay}" Width="200" Height="30" Margin="10" />
-                <TextBox Width="200" Height="30" Text="{Binding Password, Mode=TwoWay}"/>
+                <!-- Titre du login -->
+                <TextBlock HorizontalAlignment="Center" FontSize="60" FontFamily="Showcard Gothic" Height="85" Foreground="#FF388E3C" FontWeight="Bold">
+                    <Run Language="fr-fr" Text="LOGIN"/>
+                </TextBlock>
 
-                <!-- PasswordBox pour Password -->
-                <Button Name="Login" Command="{Binding ExecuteLoginE}"  Content="Login " Width="100" Margin="5" FontSize="20"/>
-                <Button Name="Register" Command="{Binding ExecuteRegisterE}"  Content="Register " Width="100" FontSize="20"/>
+                <!-- Zone de saisie du nom d'utilisateur -->
+                <Border BorderBrush="#FF388E3C" BorderThickness="2" CornerRadius="10" Margin="10" Width="300">
+                    <TextBox Text="{Binding Username, Mode=TwoWay}" Style="{StaticResource TextBoxStyle}" />
+                </Border>
+
+                <!-- Zone de saisie du mot de passe -->
+                <Border BorderBrush="#FF388E3C" BorderThickness="2" CornerRadius="10" Margin="10" Width="300">
+                    <TextBox Width="200" Height="30" Text="{Binding Password, Mode=TwoWay}" Style="{StaticResource TextBoxStyle}"/>
+                </Border>
+
+                <!-- Bouton Login -->
+                <Button Name="Login" Command="{Binding ExecuteLoginE}" Content="Login " Style="{StaticResource ButtonStyle}"/>
+
+                <!-- Bouton Register -->
+                <Button Name="Register" Command="{Binding ExecuteRegisterE}" Content="Register " Style="{StaticResource ButtonStyle}"/>
+
+                <!-- Bouton Settings -->
+
+                <!-- TextBox pour modifier la chaîne de connexion, visible seulement quand Settings est activé -->
+                <Border BorderBrush="#FF388E3C" BorderThickness="2" CornerRadius="10" Margin="10" Width="300">
+                    <TextBox Text="{Binding ServerAddress, Mode=TwoWay}" Style="{StaticResource TextBoxStyle}" />
+                </Border>
+
+                <!-- Ajoute ici un bouton pour sauver la chaîne de connexion si nécessaire -->
             </StackPanel>
         </Border>
     </Grid>

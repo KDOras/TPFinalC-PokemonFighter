@@ -16,5 +16,7 @@ namespace WpfCours.MVVM.ViewModel
 
         // Propriété pour stocker le Pokémon sélectionné
         public string SelectedPokemon { get; set; }
+
+        public string DataBase { get; set; }
     }
 }

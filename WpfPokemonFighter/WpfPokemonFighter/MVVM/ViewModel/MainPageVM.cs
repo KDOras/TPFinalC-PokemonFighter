@@ -37,6 +37,8 @@ namespace WpfCours.MVVM.ViewModel
         public string Attack1Ennemy;
         public string Attack2Ennemy;
         private string BackgroundPath;
+        public List<string> ennemytype;
+        public List<string> alliestype;
 
         public string Background{ get { return BackgroundPath; } set { if (SetProperty(ref BackgroundPath, value)) { OnPropertyChanged(nameof(Background)); } } }
 
@@ -107,9 +109,12 @@ namespace WpfCours.MVVM.ViewModel
             {
                 // Utilisez l'ID pour effectuer des actions
                 var selectedSpell = service.GetSpellIdBySpellId(spellId, CurrentPlayerPokemon);
+
+                double typeMultiplier = service.CalculateDamageMultiplier(alliestype, ennemytype);
                 // Appliquez les dégâts
 
-                adjustedDamage = GetSpellDamageByID(selectedSpell) * BoostPokemonAttack;
+                adjustedDamage = GetSpellDamageByID(selectedSpell) * BoostPokemonAttack * typeMultiplier;
+
 
                 // Log des dégâts calculés
 
@@ -119,55 +124,23 @@ namespace WpfCours.MVVM.ViewModel
                 // Vérifie si l'ennemi est vaincu
                 if (EnemyHealth <= 0)
                 {
-                    VictoryCount++; // Incrémentation du compteur;
-                    if (MessageBox.Show("Voulez-vous recommencer ?", "Victoire", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                    {
-                        LoadPokemons();
-                        Random random = new Random();
-                        int randomId1 = random.Next(1, 3);
-                        if (randomId1 == 1)
-                        {
-                            BoostPokemonAttack += 0.10;
-                            BoostPokemonPVEnnemy += 0.15;
-                        }
-                        else if (randomId1 == 2)
-                        {
-                            BoostPokemonPV += 0.10;
-                            BoostPokemonAttackEnnemy += 0.15;
-                        }
-                        return 1;
-                    }
-                    else
-                    {
-                        HandleRequestChangeViewCommand();
-                        return 0;
-                    }
+                    HandleVictory();
                 }
-
-                EnnemyAttack(); // Appel à l'attaque ennemie
-
-                // Si la santé du joueur est inférieure ou égale à 0, gestion de la défaite
-                if (PlayerHealth <= 0)
+                else
                 {
-                    VictoryCount = 0;
-                    BoostPokemonAttack = 1;
-                    BoostPokemonAttackEnnemy = 1;
-                    BoostPokemonPV = 1;
-                    BoostPokemonPVEnnemy = 1;
-                    if (MessageBox.Show("Voulez-vous recommencer ?", "Défaite", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+
+                    EnnemyAttack(); // Appel à l'attaque ennemie
+
+                    // Si la santé du joueur est inférieure ou égale à 0, gestion de la défaite
+                    if (PlayerHealth <= 0)
                     {
-                        LoadPokemons();
-                        return -1;
-                    }
-                    else
-                    {
-                        HandleRequestChangeViewCommand();
+                        HandleDefeat();
                         return 0;
                     }
                 }
             }
             return -1;
-        }
+            }
 
         private void EnnemyAttack()
         {
@@ -201,7 +174,7 @@ namespace WpfCours.MVVM.ViewModel
                 // Vérifier l'ID du Pokémon ennemi
 
                 // Calculer le multiplicateur de type
-                double typeMultiplier = service.CalculateDamageMultiplier(IdEnnemy, IdAllies);
+                double typeMultiplier = service.CalculateDamageMultiplier(ennemytype, alliestype);
 
                 // Récupérer les dégâts du sort
                 int spellDamage = GetSpellDamageByID(spellId);
@@ -211,11 +184,6 @@ namespace WpfCours.MVVM.ViewModel
 
                 // Appliquer les dégâts à l'ennemi
                 PlayerHealth -= (int)Math.Floor(adjustedDamage);
-
-                if (PlayerHealth <= 0)
-                {
-                    MessageBox.Show("L'ennemi a gagné !");
-                }
             }
             else
             {
@@ -433,78 +401,79 @@ namespace WpfCours.MVVM.ViewModel
             PokemonService pokemonService = new PokemonService();
             pokemonService.CleanData();
             // Création d'un contexte de base de données
-            using (var context = new ExerciceMonsterContext()) // Remplace par ton contexte de base de données
+            using (var context = new ExerciceMonsterContext()) // Récupère le DbContext configuré
             {
-                // Charger le Pokémon du joueur (ici, j'assume que c'est Pikachu)
+                if (context == null)
+                {
+                    throw new InvalidOperationException("Le contexte de base de données est null.");
+                }
+
+                // Génère un ID Pokémon aléatoire pour l'ennemi
                 Random random = new Random();
-                Random random2 = new Random();
                 int randomId = random.Next(1, context.Monsters.Count() + 1);
-                randomId = pokemonService.TestEvolution(randomId, VictoryCount);
-                IdAllies = pokemonService.TestEvolution(IdAllies, VictoryCount);
+                randomId = pokemonService.TestEvolution(randomId, VictoryCount); // Applique l'évolution
+                IdAllies = pokemonService.TestEvolution(IdAllies, VictoryCount); // Evolution du Pokémon du joueur
                 IdEnnemy = randomId;
+
+                // Récupère les Pokémon du joueur et de l'ennemi en une seule requête pour optimiser
                 var playerPokemon = context.Monsters.FirstOrDefault(p => p.Id == IdAllies);
                 var enemyPokemon = context.Monsters.FirstOrDefault(p => p.Id == randomId);
+
+                // Vérifie si les Pokémon existent avant de procéder
+                if (playerPokemon == null || enemyPokemon == null)
+                {
+                    throw new InvalidOperationException("Le Pokémon du joueur ou l'ennemi est introuvable.");
+                }
+
+                // Attribue les valeurs des Pokémon du joueur
                 EnemyPokemon1 = enemyPokemon;
                 LoadPokemon(IdAllies);
-                // Pokemon du Joueurs
                 AlliesURL = playerPokemon.ImageUrl;
+
+                // Calcul des points de vie du joueur
                 adjustedPV = playerPokemon.Health * BoostPokemonPV;
                 adjustedPVMax = playerPokemon.Health * BoostPokemonPV;
                 PlayerHealth = (int)Math.Floor(adjustedPV);
                 PlayerHealth2 = (int)Math.Floor(adjustedPVMax);
-                //Pokemon Ennemy
+
+                // Attribue les valeurs des Pokémon ennemis
                 EnnemyURL = enemyPokemon.ImageUrl;
                 adjustedPVEnnemy = enemyPokemon.Health * BoostPokemonPVEnnemy;
                 adjustedPVMaxEnnemy = enemyPokemon.Health * BoostPokemonPVEnnemy;
                 EnemyHealth = (int)Math.Floor(adjustedPVEnnemy);
                 EnemyHealth2 = (int)Math.Floor(adjustedPVMaxEnnemy);
-                //Spell
-                var spellsList = playerPokemon.Spells.ToList(); // Convertir ICollection<Spell> en List<Spell>
-                                                                // Charger le Monstre avec ses attaques
-                var monster = context.Monsters
-                                     .Include(m => m.Spells)
-                                     .FirstOrDefault(m => m.Id == playerPokemon.Id);
 
-                if (monster != null)
+                // Récupère les types des Pokémon
+                ennemytype = pokemonService.GetPokemonTypes(IdEnnemy);
+                alliestype = pokemonService.GetPokemonTypes(IdAllies);
+
+                // Charge les attaques du Pokémon du joueur
+                var playerMonster = context.Monsters
+                                           .Include(m => m.Spells)
+                                           .FirstOrDefault(m => m.Id == playerPokemon.Id);
+
+                if (playerMonster != null && playerMonster.Spells != null && playerMonster.Spells.Count > 0)
                 {
-                    // Vérifier si le Monstre a des attaques
-                    if (monster.Spells != null && monster.Spells.Count > 0)
-                    {
-                        // Extraire la première attaque
-                        var attack1 = monster.Spells.ElementAtOrDefault(0)?.Name ?? "Aucune attaque";
-
-                        // Extraire la deuxième attaque
-                        var attack2 = monster.Spells.ElementAtOrDefault(1)?.Name ?? "Aucune attaque";
-
-                        // Assigner les valeurs aux variables de liaison
-                        Attack1 = attack1;
-                        Attack2 = attack2;
-                        SpellID = attack1;
-                        SpellIDC = attack2;
-                        }
-                    }
-                var monster2 = context.Monsters
-                                     .Include(m => m.Spells)
-                                     .FirstOrDefault(m => m.Id == enemyPokemon.Id);
-
-                if (monster2 != null) {
-                    // Vérifier si le Monstre a des attaques
-                    if (monster.Spells != null && monster.Spells.Count > 0)
-                    {
-                        // Extraire la première attaque
-                        var attack1E = monster.Spells.ElementAtOrDefault(0)?.Name ?? "Aucune attaque";
-
-                        // Extraire la deuxième attaque
-                        var attack2E = monster.Spells.ElementAtOrDefault(1)?.Name ?? "Aucune attaque";
-
-                        // Assigner les valeurs aux variables de liaison
-                        Attack1Ennemy = attack1E;
-                        Attack2Ennemy = attack2E;
-                    }
+                    // Assigner les attaques du joueur
+                    Attack1 = playerMonster.Spells.ElementAtOrDefault(0)?.Name ?? "Aucune attaque";
+                    Attack2 = playerMonster.Spells.ElementAtOrDefault(1)?.Name ?? "Aucune attaque";
+                    SpellID = Attack1;
+                    SpellIDC = Attack2;
                 }
 
+                // Charge les attaques du Pokémon ennemi
+                var enemyMonster = context.Monsters
+                                          .Include(m => m.Spells)
+                                          .FirstOrDefault(m => m.Id == enemyPokemon.Id);
+
+                if (enemyMonster != null && enemyMonster.Spells != null && enemyMonster.Spells.Count > 0)
+                {
+                    // Assigner les attaques de l'ennemi
+                    Attack1Ennemy = enemyMonster.Spells.ElementAtOrDefault(0)?.Name ?? "Aucune attaque";
+                    Attack2Ennemy = enemyMonster.Spells.ElementAtOrDefault(1)?.Name ?? "Aucune attaque";
+                }
             }
-            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

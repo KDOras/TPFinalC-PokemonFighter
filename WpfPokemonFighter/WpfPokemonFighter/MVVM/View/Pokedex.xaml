@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <!-- Fond de la page -->
         <Grid.Background>
             <ImageBrush ImageSource="https://e1.pxfuel.com/desktop-wallpaper/436/831/desktop-wallpaper-pokemon-pokedex-background-pokedex.jpg"/>
         </Grid.Background>
@@ -18,94 +19,119 @@
         </Grid.RowDefinitions>
 
         <!-- Titre -->
-        <TextBlock Text="Choisissez votre Pokémon" FontSize="24" HorizontalAlignment="Center" Margin="0,10,0,10" />
+        <TextBlock Text="Choisissez votre Pokémon" FontSize="24" HorizontalAlignment="Center" Margin="0,10,0,10" Foreground="White" FontWeight="Bold"/>
 
         <!-- Grille des Pokémon -->
         <Grid Grid.Row="1" Margin="20">
-            <Grid.Background>
-                <ImageBrush/>
-            </Grid.Background>
-            <UniformGrid Rows="2" Columns="4" HorizontalAlignment="Center">
+            <UniformGrid Rows="2" Columns="4" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <!-- Pokémon 1 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Bulbasaur">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Bulbasaur" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon1Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Bulbasaur" HorizontalAlignment="Center"/>
-                            <Rectangle  Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon1Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Bulbasaur" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>
 
                 <!-- Pokémon 2 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Charmander">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Charmander" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon2Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Charmander" HorizontalAlignment="Center"/>
-                            <Rectangle Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon2Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Charmander" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>
 
                 <!-- Pokémon 3 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Squirtle">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Squirtle" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon3Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Squirtle" HorizontalAlignment="Center"/>
-                            <Rectangle Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon3Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Squirtle" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>
 
                 <!-- Pokémon 4 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Pikachu">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Pikachu" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon4Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Pikachu" HorizontalAlignment="Center"/>
-                            <Rectangle Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon4Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Pikachu" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>
+
                 <!-- Pokémon 5 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Vulpix">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Vulpix" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon5Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Vulpix" HorizontalAlignment="Center"/>
-                            <Rectangle Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon5Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Vulpix" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>
+
                 <!-- Pokémon 6 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Pidgey">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Pidgey" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon6Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Pidgey" HorizontalAlignment="Center"/>
-                            <Rectangle Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon6Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Pidgey" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>
+
                 <!-- Pokémon 7 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Nidoran♂">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Nidoran♂" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon7Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Nidoran♂" HorizontalAlignment="Center"/>
-                            <Rectangle Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon7Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Nidoran♂" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>
+
                 <!-- Pokémon 8 -->
-                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Magikarp">
+                <Button Command="{Binding SelectPokemonCommand}" CommandParameter="Magikarp" Margin="10">
                     <Button.Content>
                         <StackPanel>
-                            <Image Source="{Binding Pokemon8Sprite}" Width="100" Height="100" />
-                            <TextBlock Text="Magikarp" HorizontalAlignment="Center"/>
-                            <Rectangle Fill="Black" Opacity="0.5" Height="100" Width="100"/>
+                            <Border BorderBrush="White" BorderThickness="2" CornerRadius="15" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Image Source="{Binding Pokemon8Sprite}" Width="100" Height="100"/>
+                                    <TextBlock Text="Magikarp" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Button.Content>
                 </Button>

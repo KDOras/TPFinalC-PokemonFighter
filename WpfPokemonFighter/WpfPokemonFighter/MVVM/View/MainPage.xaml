@@ -22,13 +22,13 @@
         <!-- Barre de vie Pokémon allié -->
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,60">
             <TextBlock Text="{Binding PlayerHealth}" FontWeight="Bold" Foreground="White" FontSize="14"/>
-            <ProgressBar Name="PlayerHealth" Width="200" Height="20" Value="{Binding PlayerHealth}" Maximum="{Binding PlayerHealth2}" Background="Gray" Foreground="Green"/>
+            <ProgressBar Name="PlayerHealth" Width="200" Height="20" Value="{Binding PlayerHealth}" Maximum="{Binding PlayerHealth2}" Background="#FF222222" Foreground="Green" BorderBrush="Black"/>
         </StackPanel>
 
         <!-- Barre de vie Pokémon ennemi -->
         <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,30,0">
             <TextBlock Text="{Binding EnemyHealth}" FontWeight="Bold" Foreground="White" FontSize="14" HorizontalAlignment="Right"/>
-            <ProgressBar Name="EnemyHealth" Width="200" Height="20" Value="{Binding EnemyHealth}" Maximum="{Binding EnemyHealth2}" Background="Gray" Foreground="Red"/>
+            <ProgressBar Name="EnemyHealth" Width="200" Height="20" Value="{Binding EnemyHealth}" Maximum="{Binding EnemyHealth2}" Background="#FF222222" Foreground="#FF2C8100" BorderBrush="Black"/>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
@@ -36,12 +36,71 @@
             <TextBlock Text="{Binding VictoryCount}" FontSize="24" FontWeight="Bold" Foreground="Gold"/>
         </StackPanel>
 
-        <!-- Boutons pour les attaques -->
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,640,220" Background="Black" Opacity="0.8">
-            <Button Content="{Binding Attack1}" Width="150" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellID}" Foreground="Black" Background="#FF36BD48"/>
-            <Button Content="{Binding Attack2}" Width="150" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellIDC}" Foreground="Black" Background="#FF4CC930"/>
-            <Button Content="{Binding Attack3}" Width="150" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellID3}" Foreground="Black" Background="#FF5BC237"/>
-            <Button Content="{Binding Attack4}" Width="150" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellID4}" Foreground="Black" Background="#FF5BC535"/>
-        </StackPanel>
+        <Border CornerRadius="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,640,220" Opacity="0.8">
+            <Border.Background>
+                <ImageBrush ImageSource="https://www.publicdomainpictures.net/pictures/130000/nahled/brown-top-gradient-background.jpg"/>
+            </Border.Background>
+
+            <!-- StackPanel à l'intérieur du Border -->
+            <StackPanel Orientation="Vertical" Margin="10">
+
+                <!-- Bouton 1 -->
+                <Button Content="{Binding Attack1}" Width="120" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellID}" Foreground="White">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Background>
+                        <ImageBrush ImageSource="https://img.freepik.com/photos-gratuite/flou-luxe-abstrait-degrade-gris-fonce-noir-utilise-comme-mur-studio-arriere-plan-pour-afficher-vos-produits_1258-63996.jpg?semt=ais_hybrid"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Bouton 2 -->
+                <Button Content="{Binding Attack2}" Width="120" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellIDC}" Foreground="White">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Background>
+                        <ImageBrush ImageSource="https://img.freepik.com/photos-gratuite/flou-luxe-abstrait-degrade-gris-fonce-noir-utilise-comme-mur-studio-arriere-plan-pour-afficher-vos-produits_1258-63996.jpg?semt=ais_hybrid"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Bouton 3 -->
+                <Button Content="{Binding Attack3}" Width="120" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellID3}" Foreground="White">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Background>
+                        <ImageBrush ImageSource="https://img.freepik.com/photos-gratuite/flou-luxe-abstrait-degrade-gris-fonce-noir-utilise-comme-mur-studio-arriere-plan-pour-afficher-vos-produits_1258-63996.jpg?semt=ais_hybrid"/>
+                    </Button.Background>
+                </Button>
+
+                <!-- Bouton 4 -->
+                <Button Content="{Binding Attack4}" Width="120" Height="40" Margin="5" Command="{Binding AttackCommand}" CommandParameter="{Binding SpellID4}" Foreground="White">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Background>
+                        <ImageBrush ImageSource="https://img.freepik.com/photos-gratuite/flou-luxe-abstrait-degrade-gris-fonce-noir-utilise-comme-mur-studio-arriere-plan-pour-afficher-vos-produits_1258-63996.jpg?semt=ais_hybrid"/>
+                    </Button.Background>
+                </Button>
+
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

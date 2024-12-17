@@ -135,74 +135,78 @@ namespace WpfCours.MVVM.ViewModel
             }
         }
 
-        public bool DatabaseVerif()
+    public bool DatabaseVerif()
         {
-            var service = new ExerciceMonsterContext();
+            var service = DbContextManager.GetDbContext();
             return !service.Monsters.Any();
         }
 
         public void CleanData()
         {
-            using (SqlConnection connection = new SqlConnection("Server=MSI\\SQLEXPRESS;Database=ExerciceMonster;Trusted_Connection=True; TrustServerCertificate=True;"))
-            {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection("Server=MSI\\SQLEXPRESS;Database=ExerciceMonster;Trusted_Connection=True; TrustServerCertificate=True;"))
+                {
+                    connection.Open(); // Assurez-vous que cette ligne n'échoue pas
 
-                // Désactiver les contraintes
-                string disableConstraints = "ALTER TABLE Monster NOCHECK CONSTRAINT ALL;";
-                using (SqlCommand command = new SqlCommand(disableConstraints, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
+                    // Désactiver les contraintes
+                    string disableConstraints = "ALTER TABLE Monster NOCHECK CONSTRAINT ALL;";
+                    using (SqlCommand command = new SqlCommand(disableConstraints, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
 
-                // Supprimer les données
-                string deleteQuery = "DELETE FROM MonsterSpell;";
-                using (SqlCommand command = new SqlCommand(deleteQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                string deletedQuery = "DELETE FROM PlayerMonster;";
-                using (SqlCommand command = new SqlCommand(deletedQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                string deletQuery = "DELETE FROM Monster;";
-                using (SqlCommand command = new SqlCommand(deletQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                string deletedsQuery = "DELETE FROM Spell;";
-                using (SqlCommand command = new SqlCommand(deletedsQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                // Réactiver les contraintes
-                string enableConstraints = "ALTER TABLE Monster CHECK CONSTRAINT ALL;";
-                using (SqlCommand command = new SqlCommand(enableConstraints, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                string AUTODELETEDsQuery = "DBCC CHECKIDENT ('Spell', RESEED,0);";
-                using (SqlCommand command = new SqlCommand(AUTODELETEDsQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                string AUTODELETEsQuery = "DBCC CHECKIDENT ('Monster', RESEED,0);";
-                using (SqlCommand command = new SqlCommand(AUTODELETEsQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                string AUTODELETEQuery = "DBCC CHECKIDENT ('Player', RESEED,0);";
-                using (SqlCommand command = new SqlCommand(AUTODELETEQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                string AUTODELETQuery = "DBCC CHECKIDENT ('Login', RESEED,0);";
-                using (SqlCommand command = new SqlCommand(AUTODELETQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                SpellInit();
-                PokemonInit();
+                    // Supprimer les données
+                    string deleteQuery = "DELETE FROM MonsterSpell;";
+                    using (SqlCommand command = new SqlCommand(deleteQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    string deletedQuery = "DELETE FROM PlayerMonster;";
+                    using (SqlCommand command = new SqlCommand(deletedQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    string deletQuery = "DELETE FROM Monster;";
+                    using (SqlCommand command = new SqlCommand(deletQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    string deletedsQuery = "DELETE FROM Spell;";
+                    using (SqlCommand command = new SqlCommand(deletedsQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    // Réactiver les contraintes
+                    string enableConstraints = "ALTER TABLE Monster CHECK CONSTRAINT ALL;";
+                    using (SqlCommand command = new SqlCommand(enableConstraints, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    // Reset Auto-increment
+                    string AUTODELETEDsQuery = "DBCC CHECKIDENT ('Spell', RESEED,0);";
+                    using (SqlCommand command = new SqlCommand(AUTODELETEDsQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    string AUTODELETEsQuery = "DBCC CHECKIDENT ('Monster', RESEED,0);";
+                    using (SqlCommand command = new SqlCommand(AUTODELETEsQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    string AUTODELETEQuery = "DBCC CHECKIDENT ('Player', RESEED,0);";
+                    using (SqlCommand command = new SqlCommand(AUTODELETEQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    string AUTODELETQuery = "DBCC CHECKIDENT ('Login', RESEED,0);";
+                    using (SqlCommand command = new SqlCommand(AUTODELETQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    SpellInit();
+                    PokemonInit();
                 }
             }
 
@@ -455,13 +459,26 @@ namespace WpfCours.MVVM.ViewModel
                         if (defenderTypes.Contains(effectiveType))
                         {
                             multiplier *= 2.0; // Augmente les dégâts si le type est efficace
-                            MessageBox.Show($"Le type {attackerType} est efficace contre {effectiveType}. Multiplicateur: 2.0");
                         }
                     }
                 }
             }
 
             return multiplier;
+        }
+
+        public List<string> GetPokemonTypes(int pokemonId)
+        {
+            if (PokemonTypes.ContainsKey(pokemonId))
+            {
+                return PokemonTypes[pokemonId]; // Retourne les types du Pokémon
+            }
+            else
+            {
+                // Si l'ID du Pokémon n'existe pas, renvoie une liste vide
+                MessageBox.Show($"ERREUR - Aucun type trouvé pour le Pokémon ID {pokemonId}");
+                return new List<string>();
+            }
         }
     }
 }

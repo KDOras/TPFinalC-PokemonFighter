@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,11 +20,9 @@ namespace WpfCours.MVVM.ViewModel
         public ICommand ExecuteLoginE { get; set; }
         public ICommand ExecuteRegisterE { get; set; }
 
-        private string _username;
-        private string _password;
+        private string _username = "Votre Username";
+        private string _password = "Votre Mot de Passe";
         public string HashPassword;
-
-        // Propriété Username
         public string Username
         {
             get { return _username; }

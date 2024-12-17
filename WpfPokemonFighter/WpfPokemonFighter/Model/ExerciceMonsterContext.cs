@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using WpfCours.MVVM.ViewModel;
 
 namespace WpfCours.Model;
 
@@ -22,10 +25,61 @@ public partial class ExerciceMonsterContext : DbContext
     public virtual DbSet<Player> Players { get; set; }
 
     public virtual DbSet<Spell> Spells { get; set; }
+    SharedService shared = new SharedService();
+    private static string _connectionString;
 
+    // Propriété pour obtenir ou définir la chaîne de connexion
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS;Database=ExerciceMonster;Trusted_Connection=True; TrustServerCertificate=True;");
+    {
+
+        // Utilisez la chaîne de connexion définie dans SetConnectionString
+        optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS;Database=ExerciceMonster;Trusted_Connection=True; TrustServerCertificate=True;");
+    }
+
+    private void ReconfigureContext()
+    {
+        // Nous appelons OnConfiguring ici pour reconfigurer le DbContext
+        var optionsBuilder = new DbContextOptionsBuilder<ExerciceMonsterContext>();
+        optionsBuilder.UseSqlServer(shared.DataBase);
+        this.ChangeTracker.Clear();  // Nettoie les changements non enregistrés
+        this.Dispose(); // Détruit l'instance actuelle du DbContext
+
+        // Recréation du DbContext avec la nouvelle chaîne de connexion
+        var newContext = new ExerciceMonsterContext(optionsBuilder.Options);
+    }
+    public void SetConnectionString(string newConnectionString)
+    {
+        shared.DataBase = newConnectionString;
+        ForceReconfigureDbContexts();
+    }
+
+    public static ExerciceMonsterContext CreateNewContext(DbContextOptions<ExerciceMonsterContext> options)
+    {
+        return new ExerciceMonsterContext(options);
+    }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddDbContext<ExerciceMonsterContext>(options =>
+            options.UseSqlServer(shared.DataBase));
+    }
+
+    private static List<Action> _dbContextReconfigActions = new List<Action>();
+
+    // Méthode pour enregistrer une action de reconfiguration pour les DbContext
+    public static void RegisterDbContextReconfigAction(Action reconfigAction)
+    {
+        _dbContextReconfigActions.Add(reconfigAction);
+    }
+
+    // Forcer la reconfiguration des DbContext en appelant chaque action enregistrée
+    private static void ForceReconfigureDbContexts()
+    {
+        foreach (var reconfigAction in _dbContextReconfigActions)
+        {
+            reconfigAction();
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
