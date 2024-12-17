@@ -6,9 +6,12 @@ Fonctionalité :
 - CreateUser
 - Login
 - Choose Pokemon
-- Combat
-- Barre de vie
-- Compteur de Victoire
+- Combat :
+  - Barre de vie
+  - Compteur de Victoire
+  - 4 Attaque Max (2 sur tout les pokemons pour plus d'amusement et moins de situation impossible à gagner ou trop simple)
+  - Boost sur votre pokemon à chaque victoire de 0.05 soit sur les PV soit sur l'attaque ( aléatoire entre les 2 )
+  - Boost sur l'adversaire à chaque victoire de 0.15 soit sur les PV soit sur l'attaque ( aléatoire entre les 2 )
 
 
 De Plus si vous voulez vous amusez sur les détails :
