@@ -130,7 +130,7 @@ namespace WpfCours.MVVM.ViewModel
                 }
 
                 // Vérifie le mot de passe en comparant celui haché dans la base et celui saisi
-                if (user.PasswordHash == HashedPassword(enteredPassword))
+                if (user.PasswordHash == enteredPassword)
                 {
                     MessageBox.Show("Connexion réussie !");
                     return true;

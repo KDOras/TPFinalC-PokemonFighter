@@ -11,7 +11,7 @@
 
     <Grid Width="800" Margin="0,0,0,10">
         <!-- Image de fond -->
-        <Image Source="Combat-background.gif" Stretch="Fill" Margin="0,0,0,-10"/>
+        <Image Source="{Binding Background}" Stretch="Fill" Margin="0,0,0,-10"/>
 
         <Image Name="EnemyPokemonImage" Source="{Binding EnnemyURL}" Width="200" Height="200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,154,157"/>
 

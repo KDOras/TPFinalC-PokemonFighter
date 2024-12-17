@@ -5,7 +5,7 @@ Fonctionalité :
 
 - CreateUser
 - Login
-- Choose Pokemon
+- Pokedex de Choix ( les pokemons on directement les attaques en dessous du coup pas de page pour les attaques car il y'a marquer les degat et les nom)
 - Combat :
   - Barre de vie
   - Compteur de Victoire

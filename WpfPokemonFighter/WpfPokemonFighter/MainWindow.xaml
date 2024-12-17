@@ -21,6 +21,10 @@
         <DataTemplate DataType="{x:Type VM:MainBackgroundVM}">
             <View:MainWindow/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type VM:PokedexVM}">
+            <View:Pokedex/>
+        </DataTemplate>
     </Window.Resources>
     
     <Grid>
