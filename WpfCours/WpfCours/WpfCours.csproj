@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MVVM\View\ab3f33372c49557799436365384f1ab1.jpg" />
+    <None Remove="MVVM\View\CB.jpg" />
+    <None Remove="MVVM\View\CB2.png" />
+    <None Remove="MVVM\View\Combat-background.gif" />
+    <None Remove="MVVM\View\credits3.png" />
+    <None Remove="MVVM\View\credits5.png" />
+    <None Remove="MVVM\View\funny-cat-friends-taking-picture-pnpc5983h1l6avo9.jpg" />
+    <None Remove="MVVM\View\main.png" />
+    <None Remove="MVVM\View\War-Cat-meme-88f6yf.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="MVVM\View\CB.jpg" />
+    <Resource Include="MVVM\View\Combat-background.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="MVVM\View\credits3.png" />
+    <Resource Include="MVVM\View\credits5.png" />
+    <Resource Include="MVVM\View\funny-cat-friends-taking-picture-pnpc5983h1l6avo9.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="MVVM\View\CB2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
