@@ -98,6 +98,12 @@ namespace WpfCours.MVVM.ViewModel
                 CurrentPlayerPokemon = context.Monsters.Include(m => m.Spells).FirstOrDefault(m => m.Id == pokemonId);
         }
 
+        public void LoadEPokemon(int pokemonId)
+        {
+            using (var context = new ExerciceMonsterContext())
+                EnemyPokemon2 = context.Monsters.Include(m => m.Spells).FirstOrDefault(m => m.Id == pokemonId);
+        }
+
         public int Attack(string attackName)
         {
             PokemonService service = new PokemonService();
@@ -154,11 +160,11 @@ namespace WpfCours.MVVM.ViewModel
             // Vérifier quel sort est choisi
             if (randomAttack == 1)
             {
-                spellId = GetSpellIdByName(Attack1Ennemy);
+                spellId = GetSpellIdByNameEnnemy(Attack1Ennemy);
             }
             else if (randomAttack == 2)
             {
-                spellId = GetSpellIdByName(Attack2Ennemy);
+                spellId = GetSpellIdByNameEnnemy(Attack2Ennemy);
             }
 
             if (spellId != -1)
@@ -322,6 +328,37 @@ namespace WpfCours.MVVM.ViewModel
             }
         }
 
+        public int GetSpellIdByNameEnnemy(string attackName)
+        {
+            // Vérifiez si le Pokémon actuel est null
+            if (CurrentPlayerPokemon == null)
+            {
+                MessageBox.Show("Aucun Pokémon n'est sélectionné.");
+                return -1;
+            }
+
+            // Vérifiez si le Pokémon a des sorts (Spells)
+            if (CurrentPlayerPokemon.Spells == null || !CurrentPlayerPokemon.Spells.Any())
+            {
+                MessageBox.Show("Ce Pokémon n'a pas de sorts disponibles.");
+                return -1;
+            }
+
+            // Recherche du sort par nom (insensible à la casse)
+            var spell = EnemyPokemon2.Spells.FirstOrDefault(s => s.Name.Equals(attackName, StringComparison.OrdinalIgnoreCase));
+
+            // Si le sort est trouvé, retournez son ID, sinon retournez -1
+            if (spell != null)
+            {
+                return spell.Id;
+            }
+            else
+            {
+                MessageBox.Show($"L'attaque '{attackName}' n'a pas été trouvée.");
+                return -1;
+            }
+        }
+
         public int GetMonsterIdByName(string monsterName)
         {
             // Vérifiez si le nom du monstre est nul ou vide
@@ -428,6 +465,7 @@ namespace WpfCours.MVVM.ViewModel
                 // Attribue les valeurs des Pokémon du joueur
                 EnemyPokemon1 = enemyPokemon;
                 LoadPokemon(IdAllies);
+                LoadEPokemon(IdEnnemy);
                 AlliesURL = playerPokemon.ImageUrl;
 
                 // Calcul des points de vie du joueur
